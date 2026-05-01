@@ -20,6 +20,7 @@
     <li><a href="#track">The Track</a></li>
     <li><a href="#mint">Mint</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#faq">FAQs</a></li>
     <li><a href="build.html" style="color:var(--red)">Build</a></li>
     <li><a href="form.html" style="color:var(--red)">Join</a></li>
     <li><a href="game.html" style="color:var(--gold)">🎮 Play</a></li>
@@ -81,184 +82,14 @@
     </div>
   </div>
 
-  <!-- F1 Car SVG -->
-  <div class="car-container">
-    <svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" fill="none">
-      <!-- Shadow under car -->
-      <ellipse cx="430" cy="380" rx="320" ry="18" fill="rgba(0,0,0,0.6)" filter="url(#shadow-blur)"/>
-
-      <defs>
-        <filter id="shadow-blur">
-          <feGaussianBlur stdDeviation="8"/>
-        </filter>
-        <filter id="body-glow">
-          <feGaussianBlur stdDeviation="3" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <linearGradient id="bodyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stop-color="#d40000"/>
-          <stop offset="40%" stop-color="#b80000"/>
-          <stop offset="100%" stop-color="#6b0000"/>
-        </linearGradient>
-        <linearGradient id="noseGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#cc0000"/>
-          <stop offset="100%" stop-color="#900000"/>
-        </linearGradient>
-        <linearGradient id="cockpitGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stop-color="#1a1a2e"/>
-          <stop offset="100%" stop-color="#0a0a18"/>
-        </linearGradient>
-        <linearGradient id="wingGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stop-color="#cc0000"/>
-          <stop offset="100%" stop-color="#800000"/>
-        </linearGradient>
-        <linearGradient id="tireGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#2a2a2a"/>
-          <stop offset="100%" stop-color="#0d0d0d"/>
-        </linearGradient>
-        <linearGradient id="rimGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#e0c060"/>
-          <stop offset="100%" stop-color="#a07820"/>
-        </linearGradient>
-        <radialGradient id="rimCenter" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stop-color="#d4a830"/>
-          <stop offset="100%" stop-color="#8a6010"/>
-        </radialGradient>
-        <linearGradient id="floorGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stop-color="#1a0000"/>
-          <stop offset="100%" stop-color="#0d0000"/>
-        </linearGradient>
-        <linearGradient id="exhaustGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="#ff6600" stop-opacity="0.8"/>
-          <stop offset="100%" stop-color="#ff000000"/>
-        </linearGradient>
-
-        <!-- Car glow filter -->
-        <filter id="carGlow" x="-10%" y="-20%" width="120%" height="140%">
-          <feGaussianBlur stdDeviation="4" result="blur"/>
-          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-        </filter>
-      </defs>
-
-      <!-- === REAR WING === -->
-      <path d="M690 155 L830 145 L835 163 L690 173 Z" fill="url(#wingGrad)" stroke="#ff2020" stroke-width="0.5"/>
-      <path d="M695 175 L828 165 L830 178 L695 188 Z" fill="#c00000" stroke="#ff2020" stroke-width="0.5"/>
-      <path d="M690 140 L710 140 L710 200 L690 200 Z" fill="#aa0000" stroke="#cc0000" stroke-width="0.5"/>
-      <path d="M820 138 L840 138 L840 198 L820 198 Z" fill="#aa0000" stroke="#cc0000" stroke-width="0.5"/>
-      <rect x="730" y="185" width="8" height="45" fill="#880000"/>
-      <rect x="780" y="185" width="8" height="45" fill="#880000"/>
-      <path d="M695 168 L828 158 L828 162 L695 172 Z" fill="rgba(255,100,100,0.15)"/>
-
-      <!-- === MAIN BODY === -->
-      <path d="M180 275 L720 265 L730 285 L175 295 Z" fill="url(#floorGrad)" stroke="#330000" stroke-width="0.5"/>
-      <path d="M290 195 L650 185 L665 265 L290 275 Z" fill="#c00000" stroke="#ff2020" stroke-width="0.5"/>
-      <path d="M295 197 L645 187 L645 195 L295 205 Z" fill="rgba(255,200,200,0.1)"/>
-      <path d="M310 260 L650 250 L665 265 L310 275 Z" fill="#800000"/>
-      <path d="M200 230 L690 215 L695 235 L680 265 L290 275 L270 265 Z" fill="url(#bodyGrad)" stroke="#cc0000" stroke-width="0.5"/>
-      <line x1="350" y1="220" x2="350" y2="265" stroke="rgba(0,0,0,0.3)" stroke-width="0.5"/>
-      <line x1="420" y1="218" x2="420" y2="268" stroke="rgba(0,0,0,0.3)" stroke-width="0.5"/>
-      <line x1="490" y1="217" x2="490" y2="268" stroke="rgba(0,0,0,0.3)" stroke-width="0.5"/>
-      <line x1="560" y1="217" x2="560" y2="267" stroke="rgba(0,0,0,0.3)" stroke-width="0.5"/>
-      <line x1="620" y1="218" x2="620" y2="266" stroke="rgba(0,0,0,0.3)" stroke-width="0.5"/>
-      <path d="M420 175 L560 170 L565 220 L415 225 Z" fill="#b80000" stroke="#cc0000" stroke-width="0.5"/>
-      <path d="M455 140 L510 135 L515 178 L450 183 Z" fill="#1a0000" stroke="#cc0000" stroke-width="1"/>
-      <path d="M462 143 L505 138 L510 175 L457 180 Z" fill="#0a0000" opacity="0.8"/>
-      <path d="M405 195 Q460 175 520 195" stroke="#c9a84c" stroke-width="6" fill="none" stroke-linecap="round"/>
-      <path d="M408 197 Q460 178 518 197" stroke="rgba(201,168,76,0.3)" stroke-width="3" fill="none"/>
-      <path d="M457 193 L460 215 L463 193" fill="#c9a84c"/>
-      <ellipse cx="460" cy="215" rx="60" ry="22" fill="url(#cockpitGrad)" stroke="#c9a84c" stroke-width="1.5"/>
-      <path d="M405 213 Q460 205 515 213 Q515 228 460 235 Q405 228 405 213 Z" fill="rgba(20,30,80,0.6)"/>
-      <ellipse cx="460" cy="212" rx="28" ry="14" fill="#0d0d1a" opacity="0.7"/>
-      <path d="M200 245 L290 225 L290 275 L200 260 Z" fill="url(#noseGrad)"/>
-      <path d="M80 252 L200 242 L200 263 L80 255 Z" fill="#990000"/>
-      <path d="M40 253 L82 250 L82 257 L40 255 Z" fill="#660000"/>
-      <path d="M85 243 L200 233 L200 240 L85 250 Z" fill="rgba(255,150,150,0.12)"/>
-      <path d="M300 255 L350 248 L352 258 L300 268 Z" fill="#aa0000" stroke="#cc0000" stroke-width="0.5" opacity="0.8"/>
-      <path d="M310 268 L360 260 L362 268 L310 275 Z" fill="#880000" stroke="#cc0000" stroke-width="0.5" opacity="0.7"/>
-
-      <!-- === FRONT WING === -->
-      <path d="M60 255 L220 238 L222 255 L60 270 Z" fill="url(#wingGrad)"/>
-      <path d="M70 250 L215 233 L218 242 L70 258 Z" fill="#c00000"/>
-      <path d="M75 243 L210 228 L212 236 L75 250 Z" fill="#aa0000" opacity="0.8"/>
-      <path d="M55 235 L75 233 L75 278 L55 280 Z" fill="#880000" stroke="#cc0000" stroke-width="0.5"/>
-      <path d="M218 228 L230 226 L232 268 L218 270 Z" fill="#880000" stroke="#cc0000" stroke-width="0.5"/>
-      <path d="M65 237 L216 222 L216 228 L65 243 Z" fill="rgba(255,200,200,0.08)"/>
-
-      <!-- TrackX Branding -->
-      <text x="370" y="248" font-family="'Orbitron', monospace" font-size="20" font-weight="900" fill="white" letter-spacing="4" opacity="0.9">TRACKX</text>
-      <text x="580" y="252" font-family="'Orbitron', monospace" font-size="24" font-weight="900" fill="rgba(255,255,255,0.85)" letter-spacing="2">01</text>
-
-      <!-- Gold accent stripes -->
-      <path d="M200 232 L680 217 L681 222 L200 237 Z" fill="rgba(201,168,76,0.8)"/>
-      <path d="M200 262 L680 247 L681 252 L200 267 Z" fill="rgba(201,168,76,0.5)"/>
-      <path d="M42 253 L200 242 L200 245 L42 256 Z" fill="rgba(201,168,76,0.6)"/>
-
-      <!-- === REAR TYRE === -->
-      <g transform="translate(700, 230)">
-        <ellipse cx="0" cy="50" rx="58" ry="58" fill="url(#tireGrad)" stroke="#111" stroke-width="1"/>
-        <path d="M-55 28 A58 58 0 0 1 55 28" stroke="rgba(255,255,255,0.06)" stroke-width="3" fill="none"/>
-        <ellipse cx="0" cy="50" rx="38" ry="38" fill="url(#rimGrad)" stroke="#c9a84c" stroke-width="1"/>
-        <ellipse cx="0" cy="50" rx="16" ry="16" fill="url(#rimCenter)"/>
-        <line x1="0" y1="14" x2="0" y2="86" stroke="#c9a84c" stroke-width="2.5" opacity="0.8"/>
-        <line x1="-33" y1="31" x2="33" y2="69" stroke="#c9a84c" stroke-width="2.5" opacity="0.8"/>
-        <line x1="-33" y1="69" x2="33" y2="31" stroke="#c9a84c" stroke-width="2.5" opacity="0.8"/>
-        <circle cx="0" cy="14" r="3" fill="#c9a84c"/>
-        <circle cx="0" cy="86" r="3" fill="#c9a84c"/>
-        <circle cx="-33" cy="31" r="3" fill="#c9a84c"/>
-        <circle cx="33" cy="69" r="3" fill="#c9a84c"/>
-        <circle cx="-33" cy="69" r="3" fill="#c9a84c"/>
-        <circle cx="33" cy="31" r="3" fill="#c9a84c"/>
-        <polygon points="0,-8 7,4 -7,4" fill="#f0c040" transform="translate(0,50)"/>
-        <ellipse cx="0" cy="50" rx="20" ry="20" fill="rgba(255,100,0,0.08)"/>
-      </g>
-
-      <path d="M650 200 L720 195 L730 230 L700 232 L690 230 Z" fill="#990000" stroke="#cc0000" stroke-width="0.5"/>
-
-      <!-- === FRONT TYRE === -->
-      <g transform="translate(170, 230)">
-        <ellipse cx="0" cy="50" rx="48" ry="48" fill="url(#tireGrad)" stroke="#111" stroke-width="1"/>
-        <path d="M-45 25 A48 48 0 0 1 45 25" stroke="rgba(255,255,255,0.06)" stroke-width="3" fill="none"/>
-        <ellipse cx="0" cy="50" rx="30" ry="30" fill="url(#rimGrad)" stroke="#c9a84c" stroke-width="1"/>
-        <ellipse cx="0" cy="50" rx="12" ry="12" fill="url(#rimCenter)"/>
-        <line x1="0" y1="22" x2="0" y2="78" stroke="#c9a84c" stroke-width="2" opacity="0.8"/>
-        <line x1="-26" y1="36" x2="26" y2="64" stroke="#c9a84c" stroke-width="2" opacity="0.8"/>
-        <line x1="-26" y1="64" x2="26" y2="36" stroke="#c9a84c" stroke-width="2" opacity="0.8"/>
-        <circle cx="0" cy="22" r="2.5" fill="#c9a84c"/>
-        <circle cx="0" cy="78" r="2.5" fill="#c9a84c"/>
-        <circle cx="-26" cy="36" r="2.5" fill="#c9a84c"/>
-        <circle cx="26" cy="64" r="2.5" fill="#c9a84c"/>
-        <circle cx="-26" cy="64" r="2.5" fill="#c9a84c"/>
-        <circle cx="26" cy="36" r="2.5" fill="#c9a84c"/>
-        <polygon points="0,-6 6,3 -6,3" fill="#f0c040" transform="translate(0,50)"/>
-        <ellipse cx="0" cy="50" rx="15" ry="15" fill="rgba(255,100,0,0.06)"/>
-      </g>
-
-      <line x1="170" y1="248" x2="240" y2="240" stroke="#660000" stroke-width="3"/>
-      <line x1="175" y1="262" x2="240" y2="258" stroke="#660000" stroke-width="3"/>
-      <line x1="720" y1="248" x2="660" y2="244" stroke="#660000" stroke-width="3"/>
-      <line x1="720" y1="262" x2="660" y2="260" stroke="#660000" stroke-width="3"/>
-
-      <path d="M740 230 Q800 220 900 210" stroke="url(#exhaustGrad)" stroke-width="3" fill="none" opacity="0.6"/>
-      <path d="M740 235 Q810 230 900 225" stroke="url(#exhaustGrad)" stroke-width="2" fill="none" opacity="0.4"/>
-      <ellipse cx="742" cy="232" rx="6" ry="4" fill="rgba(255,140,0,0.4)"/>
-
-      <path d="M440 170 L480 165 L485 195 L435 200 Z" fill="#cc0000" stroke="#ff2020" stroke-width="0.5"/>
-      <path d="M360 202 L390 198 L392 215 L360 218 Z" fill="#880000" stroke="#cc0000" stroke-width="0.5"/>
-      <path d="M525 198 L555 195 L557 212 L525 215 Z" fill="#880000" stroke="#cc0000" stroke-width="0.5"/>
-
-      <ellipse cx="170" cy="283" rx="48" ry="5" fill="rgba(30,30,30,0.7)" filter="url(#shadow-blur)"/>
-      <ellipse cx="700" cy="293" rx="58" ry="6" fill="rgba(30,30,30,0.8)" filter="url(#shadow-blur)"/>
-
-    </svg>
-  </div>
-
-  <!-- Motion blur duplicate -->
-  <div class="car-motion-blur">
-    <svg viewBox="0 0 900 400" xmlns="http://www.w3.org/2000/svg" fill="none">
-      <path d="M200 230 L690 215 L695 235 L680 265 L290 275 L270 265 Z" fill="#cc0000"/>
-      <path d="M60 255 L220 238 L222 255 L60 270 Z" fill="#cc0000"/>
-      <path d="M690 155 L830 145 L835 163 L690 173 Z" fill="#cc0000"/>
-    </svg>
+  <!-- REAL 3D F1 MODEL HERO VISUAL
+       Put your realistic model file here: /assets/f1-car.glb
+       The code will load that real GLB model and animate it on scroll. -->
+  <div class="f1-hero-stage real-model-stage" aria-hidden="true">
+    <div class="f1-hero-glow"></div>
+    <canvas id="realF1Canvas"></canvas>
+    <div class="f1-model-loader">LOADING CAR</div>
+    <div class="f1-hero-shadow"></div>
   </div>
 
 </section>
@@ -513,7 +344,7 @@
 <!-- ============================================
      FAQ
      ============================================ -->
-<!-- <section class="faq-section" id="faq">
+<section class="faq-section" id="faq">
   <div class="section-label">PIT WALL COMMS</div>
   <h2 class="section-title">FREQUENTLY <span class="accent">ASKED</span></h2>
 
@@ -564,7 +395,7 @@
       </div>
     </div>
   </div>
-</section> -->
+</section>
 
 <!-- FOOTER -->
 <footer>
@@ -573,6 +404,10 @@
 </footer>
 
 
+<!-- Animation libraries for the scroll-driven hero car -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="main.js"></script>
+<script type="module" src="real-f1-model.js"></script>
 </body>
 </html>

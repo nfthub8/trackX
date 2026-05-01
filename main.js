@@ -49,6 +49,96 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ---- PREMIUM SCROLL-DRIVEN REALISTIC F1 HERO CAR ----
+  // SVG is used here instead of the old blocky geometry.
+  // It stays transparent, lightweight, and looks much closer to a real F1 car.
+  const f1Car = document.querySelector('.f1-realistic-car');
+  const f1Stage = document.querySelector('.f1-hero-stage');
+  const f1Glow = document.querySelector('.f1-hero-glow');
+  const f1Shadow = document.querySelector('.f1-hero-shadow');
+  const f1Lines = document.querySelector('.f1-motion-lines');
+  const f1Wheels = document.querySelectorAll('.wheel');
+
+  if (f1Car && window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Initial premium angle on load
+    gsap.set(f1Car, {
+      xPercent: 0,
+      yPercent: -1,
+      scale: 0.98,
+      rotateY: -7,
+      rotateX: 1.5,
+      rotateZ: -0.25,
+      transformPerspective: 1200,
+      transformOrigin: '58% 52%'
+    });
+
+    // Smooth reveal after page loads
+    gsap.fromTo(f1Car,
+      { opacity: 0, x: 55, scale: 0.96, filter: 'drop-shadow(0 0 0 rgba(232,0,30,0))' },
+      { opacity: 1, x: 0, scale: 0.98, duration: 1.05, ease: 'power3.out' }
+    );
+
+    // Apple/web3-style scroll scrub:
+    // car glides inward, rotates subtly, zooms slightly, and lighting breathes.
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: '+=950',
+        scrub: 0.85
+      }
+    })
+    .to(f1Car, {
+      xPercent: -10,
+      yPercent: -2.5,
+      scale: 1.06,
+      rotateY: 5,
+      rotateX: 2.5,
+      rotateZ: 0.25,
+      ease: 'none'
+    }, 0)
+    .to(f1Glow, {
+      opacity: 0.95,
+      scale: 1.16,
+      ease: 'none'
+    }, 0)
+    .to(f1Shadow, {
+      opacity: 0.58,
+      scaleX: 0.92,
+      xPercent: -8,
+      ease: 'none'
+    }, 0)
+    .to(f1Lines, {
+      opacity: 0.82,
+      xPercent: -18,
+      scaleX: 1.18,
+      ease: 'none'
+    }, 0);
+
+    // Very small wheel movement only. The main effect is the full-car glide, not tires popping up.
+    gsap.to(f1Wheels, {
+      rotate: 55,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: '+=950',
+        scrub: 0.7
+      }
+    });
+
+    // Tiny idle motion so it does not feel dead/static.
+    gsap.to(f1Car, {
+      y: -5,
+      duration: 3.2,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut'
+    });
+  }
+
   // ---- SPEED STREAKS GENERATOR ----
   const streaksContainer = document.querySelector('.streaks-container');
   if (streaksContainer) {
@@ -185,17 +275,6 @@ document.addEventListener('DOMContentLoaded', () => {
           success.style.animation = 'fadeSlideUp 0.8s ease forwards';
         }
       }, 1800);
-    });
-  }
-
-  // ---- PARALLAX ON HERO ----
-  const carContainer = document.querySelector('.car-container');
-  const carBlur = document.querySelector('.car-motion-blur');
-  if (carContainer) {
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-      carContainer.style.transform = `translateY(calc(-50% + ${scrollY * 0.15}px))`;
-      if (carBlur) carBlur.style.transform = `translateY(calc(-50% + ${scrollY * 0.18}px))`;
     });
   }
 
