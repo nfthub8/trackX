@@ -3,7 +3,7 @@ const path = require("path");
 
 // Load template once at cold start
 const referenceBase64 = fs.readFileSync(
-  path.join(__dirname, "../../template.png"),
+  path.join(__dirname, "template.png"),
   { encoding: "base64" }
 );
 const REFERENCE_IMAGE_DATA = `data:image/png;base64,${referenceBase64}`;
