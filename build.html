@@ -728,7 +728,7 @@
       uploadThumb.style.display = 'block';
       uploadIcon.style.display = 'none';
       uploadText.textContent = file.name.length > 22 ? file.name.substring(0, 22) + '…' : file.name;
-      uploadSub.textContent = (file.size / 1024 / 1024).toFixed(1) + ' MB · Click to change';
+      uploadSub.textContent = 'Click to change';
       inputImg.src = imageDataUrl;
       inputImg.classList.add('loaded');
       inputPlaceholder.style.display = 'none';

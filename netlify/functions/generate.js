@@ -38,10 +38,18 @@ SUIT RULE (IMPORTANT):
 - Do NOT change suit shape or proportions
 
 FACE REPLACEMENT:
-- Replace ONLY the head/face area with the user's face from the FIRST image
-- Face must sit exactly in the template head position
-- Face must align with the center zipper line
-- No left/right shift, no scaling mismatch
+- Use the FIRST image ONLY for identity (facial features, skin tone, expression style).
+- DO NOT copy the original face angle, pose, or orientation from the FIRST image.
+- Reconstruct the face so it is PERFECTLY front-facing.
+
+- Face must sit exactly in the template head position.
+- Face must align with the center zipper line.
+- Both eyes must be equally visible and symmetrical.
+- Nose and mouth must be perfectly centered.
+- No left/right tilt, no 3/4 angle, no side view.
+- Head must be straight and directly facing the camera.
+
+- Do NOT include any elements from the original image like background, or pose.
 
 STYLE MATCH:
 - Repaint the face to match the template style: same shading, lighting, outline thickness, color grading
@@ -58,6 +66,12 @@ STRICT CONSISTENCY LOCK:
 REMOVE: original background, UI elements, watermarks, helmet, full body
 
 FINAL OUTPUT: 1:1 square image. Identical body as template. Only face replaced. Perfect alignment.
+
+STRICT FACE ORIENTATION RULE:
+The final face MUST be perfectly front-facing regardless of the input image angle.
+
+NEGATIVE:
+No side angle, no 3/4 face, no tilted head, no copied pose from the original image.
 `.trim();
 }
 
