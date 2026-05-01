@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TrackX — Build Your Racer</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏎</text></svg>" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ---- BUILD PAGE SPECIFIC ---- */
+    .build-hero {
+      padding-top: 90px;
+      padding-bottom: 80px;
+      background: var(--carbon);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .build-hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(232,0,30,0.07), transparent 70%);
+      pointer-events: none;
+    }
+
+    .build-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -200px; right: -200px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(201,168,76,0.06), transparent 70%);
+      pointer-events: none;
+    }
+
+    .build-wrap {
+      max-width: 1060px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 2;
+      padding: 0 24px;
+    }
+
+    /* ---- GRID LAYOUT ---- */
+    .build-grid {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    /* ---- PANEL (shared card style) ---- */
+    .build-panel {
+      background: var(--carbon-light);
+      border: 1px solid var(--border);
+      padding: 36px;
+      clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .build-panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--red), var(--gold), var(--red));
+    }
+
+    .panel-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .panel-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ---- UPLOAD ZONE ---- */
+    .upload-zone {
+      border: 2px dashed rgba(201,168,76,0.3);
+      background: rgba(255,255,255,0.02);
+      padding: 32px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.3s, background 0.3s;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: var(--red);
+      background: rgba(232,0,30,0.04);
+    }
+
+    .upload-zone input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .upload-icon {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: var(--gold);
+    }
+
+    .upload-text {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    .upload-sub {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-top: 6px;
+    }
+
+    .upload-preview-thumb {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--gold);
+      margin: 0 auto 10px;
+      display: none;
+    }
+
+    /* ---- SUIT STYLE GRID ---- */
+    .suit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .suit-option {
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 14px 12px;
+      cursor: pointer;
+      text-align: center;
+      transition: border-color 0.3s, background 0.3s;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .suit-option:hover {
+      border-color: rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.04);
+    }
+
+    .suit-option.selected {
+      border-color: var(--red);
+      background: rgba(232,0,30,0.08);
+    }
+
+    .suit-option input[type="radio"] {
+      display: none;
+    }
+
+    .suit-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin: 0 auto 8px;
+    }
+
+    .suit-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .suit-option.selected .suit-label {
+      color: var(--white);
+    }
+
+    /* ---- GENERATE BTN ---- */
+    .build-submit {
+      width: 100%;
+      background: var(--red);
+      color: var(--white);
+      border: none;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 18px 32px;
+      cursor: pointer;
+      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.2s ease, background 0.3s;
+      will-change: box-shadow;
+      transform: translateZ(0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .build-submit::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .build-submit:hover::before { left: 100%; }
+    .build-submit:hover { box-shadow: 0 4px 20px rgba(232,0,30,0.4); background: var(--red-hot); }
+    .build-submit:disabled { opacity: 0.45; cursor: not-allowed; pointer-events: none; }
+
+    .build-note {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-dim);
+      text-align: center;
+      letter-spacing: 0.1em;
+      line-height: 1.6;
+    }
+
+    /* ---- STATUS BAR ---- */
+    .build-status {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-left: 3px solid var(--gold);
+      background: rgba(201,168,76,0.06);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .build-status.show { display: block; }
+    .build-status.error { border-color: var(--red); background: rgba(232,0,30,0.06); color: #ff8888; }
+    .build-status.success { border-color: #22dd88; background: rgba(34,221,136,0.06); color: #22dd88; }
+
+    /* ---- PROCESSING ANIMATION ---- */
+    .processing-dots::after {
+      content: '';
+      animation: dots 1.2s steps(3, end) infinite;
+    }
+
+    @keyframes dots {
+      0%   { content: ''; }
+      33%  { content: '.'; }
+      66%  { content: '..'; }
+      100% { content: '...'; }
+    }
+
+    /* ---- PREVIEW PANEL ---- */
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .preview-slot {
+      position: relative;
+    }
+
+    .preview-slot-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .preview-slot-label .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--red);
+      animation: blink 1s ease infinite;
+    }
+
+    .preview-box {
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      min-height: 280px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .preview-box img.loaded {
+      display: block;
+    }
+
+    .preview-placeholder {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .preview-placeholder-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      opacity: 0.3;
+    }
+
+    .preview-placeholder-text {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--text-dim);
+      text-transform: uppercase;
+    }
+
+    /* ---- RESULT LOADING STATE ---- */
+    .result-loading {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      padding: 40px 20px;
+    }
+
+    .result-loading.show { display: flex; }
+
+    .spinner {
+      width: 44px; height: 44px;
+      border: 2px solid rgba(232,0,30,0.2);
+      border-top-color: var(--red);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .spinner-text {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+
+    /* ---- DOWNLOAD BTN ---- */
+    .download-btn {
+      width: 100%;
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid rgba(201,168,76,0.4);
+      font-family: 'Orbitron', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 15px 24px;
+      cursor: pointer;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+      transition: border-color 0.3s, background 0.3s, color 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transform: translateZ(0);
+    }
+
+    .download-btn:hover {
+      border-color: var(--gold);
+      background: rgba(201,168,76,0.08);
+      color: var(--gold-light);
+    }
+
+    .download-btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* ---- INFO BADGES ---- */
+    .info-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .info-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      clip-path: polygon(5px 0%, 100% 0%, calc(100% - 5px) 100%, 0% 100%);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .info-badge.red {
+      background: rgba(232,0,30,0.1);
+      border: 1px solid rgba(232,0,30,0.3);
+      color: var(--red);
+    }
+
+    .info-badge.gold {
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold);
+    }
+
+    .info-badge.muted {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text-muted);
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 900px) {
+      .build-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .build-panel {
+        padding: 24px 20px;
+      }
+
+      .suit-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================
+     NAVIGATION
+     ============================================ -->
+<nav>
+  <a href="index.html" class="nav-logo" style="display:inline-block;text-decoration:none;font-family:'Orbitron',monospace;font-weight:900;letter-spacing:0.1em;font-size:1.1rem;color:var(--white);">TRACK<span style="color:var(--red)">X</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#track">The Track</a></li>
+    <li><a href="index.html#mint">Mint</a></li>
+    <li><a href="index.html#roadmap">Roadmap</a></li>
+    <li><a href="build.html" style="color:var(--red)">Build</a></li>
+    <li><a href="form.html" style="color:var(--red)">Join</a></li>
+    <li><a href="game.html" style="color:var(--gold)">🎮 Play</a></li>
+  </ul>
+  <a href="https://x.com/intent/follow?screen_name=trackxnft" target="_blank" class="nav-x-btn">
+    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    Follow on X
+  </a>
+  <button class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html#track" onclick="toggleMenu()">The Track</a>
+  <a href="index.html#builder" onclick="toggleMenu()">Build</a>
+  <a href="index.html#mint" onclick="toggleMenu()">Mint</a>
+  <a href="index.html#roadmap" onclick="toggleMenu()">Roadmap</a>
+  <a href="form.html" style="color:var(--red)" onclick="toggleMenu()">Join Whitelist</a>
+  <a href="game.html" style="color:var(--gold)" onclick="toggleMenu()">🎮 Play</a>
+</div>
+
+<!-- ============================================
+     BUILD HERO
+     ============================================ -->
+<div class="build-hero">
+
+  <!-- Background effects -->
+  <div class="speed-bg" style="position:absolute;inset:0;z-index:0;overflow:hidden;">
+    <div class="glow-blob glow-blob-1" style="opacity:0.4;"></div>
+    <div class="glow-blob glow-blob-2" style="opacity:0.3;"></div>
+    <div class="streaks-container"></div>
+    <div class="asphalt-overlay" style="opacity:0.06;"></div>
+  </div>
+
+  <div class="build-wrap">
+
+    <!-- Page Header -->
+    <div class="page-header" style="text-align:center;margin-bottom:40px;">
+      <div class="section-label" style="justify-content:center;margin-bottom:20px;">
+        AI RACER GENERATOR
+      </div>
+      <h1 class="section-title" style="font-size:clamp(2.2rem,5vw,4rem);text-align:center;">
+        BUILD YOUR <span class="accent">RACER</span>
+      </h1>
+      <p style="font-family:'Rajdhani',sans-serif;font-size:1.05rem;color:var(--text-muted);max-width:520px;margin:16px auto 0;line-height:1.7;">
+        Upload your profile picture and let AI transform you into a TrackX racer. Choose your suit style and claim your grid identity.
+      </p>
+
+      <!-- Badges -->
+      <div class="info-row" style="justify-content:center;margin-top:24px;">
+        <span class="info-badge red">◆ AI POWERED</span>
+        <span class="info-badge gold">◆ NFT READY</span>
+        <span class="info-badge muted">◆ 1024 × 1024 PX</span>
+      </div>
+    </div>
+
+    <!-- ============================================
+         TWO-COLUMN LAYOUT
+         ============================================ -->
+    <div class="build-grid">
+
+      <!-- LEFT: Controls -->
+      <div class="build-panel">
+
+        <!-- Upload -->
+        <div class="panel-title">Upload PFP</div>
+
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="pfp-input" accept="image/*" />
+          <img id="upload-thumb" class="upload-preview-thumb" alt="Preview" />
+          <div class="upload-icon" id="upload-icon">⬆</div>
+          <div class="upload-text" id="upload-text">Drop your PFP here</div>
+          <div class="upload-sub" id="upload-sub">JPG, PNG, WEBP — max 10MB</div>
+        </div>
+
+        <!-- Suit Style -->
+        <div class="panel-title">Suit Style</div>
+
+        <div class="suit-grid">
+          <label class="suit-option selected">
+            <input type="radio" name="suit" value="neon" checked />
+            <div class="suit-dot" style="background:linear-gradient(135deg,#00ffff,#ff00ff);"></div>
+            <div class="suit-label">Black Neon</div>
+          </label>
+          <label class="suit-option">
+            <input type="radio" name="suit" value="red" />
+            <div class="suit-dot" style="background:linear-gradient(135deg,#e8001e,#c9a84c);"></div>
+            <div class="suit-label">Red Gold</div>
+          </label>
+          <label class="suit-option">
+            <input type="radio" name="suit" value="ice" />
+            <div class="suit-dot" style="background:linear-gradient(135deg,#a0d8ef,#ffffff);"></div>
+            <div class="suit-label">Ice Blue</div>
+          </label>
+          <label class="suit-option">
+            <input type="radio" name="suit" value="street" />
+            <div class="suit-dot" style="background:linear-gradient(135deg,#ff4400,#ffcc00,#00ffaa);"></div>
+            <div class="suit-label">Street Graf</div>
+          </label>
+        </div>
+
+        <!-- Generate -->
+        <button class="build-submit" id="generate-btn" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3"/>
+          </svg>
+          GENERATE RACER
+        </button>
+
+        <button class="download-btn" id="download-btn" disabled>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          DOWNLOAD NFT
+        </button>
+
+        <!-- Status -->
+        <div class="build-status" id="build-status"></div>
+
+      </div>
+
+      <!-- RIGHT: Preview -->
+      <div class="build-panel">
+        <div class="panel-title">Preview</div>
+
+        <div class="preview-grid">
+          <!-- Input preview -->
+          <div class="preview-slot">
+            <div class="preview-slot-label">
+              <span class="dot"></span>
+              Your PFP
+            </div>
+            <div class="preview-box" id="input-box">
+              <img id="input-img" alt="Your PFP" />
+              <div class="preview-placeholder" id="input-placeholder">
+                <div class="preview-placeholder-icon">👤</div>
+                <div class="preview-placeholder-text">Awaiting<br>Upload</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Result preview -->
+          <div class="preview-slot">
+            <div class="preview-slot-label">
+              <span class="dot" style="background:var(--gold);"></span>
+              AI Racer
+            </div>
+            <div class="preview-box" id="result-box">
+              <img id="result-img" alt="AI Racer" />
+              <div class="result-loading" id="result-loading">
+                <div class="spinner"></div>
+                <div class="spinner-text processing-dots">Generating</div>
+              </div>
+              <div class="preview-placeholder" id="result-placeholder">
+                <div class="preview-placeholder-icon">🏎</div>
+                <div class="preview-placeholder-text">Result<br>Appears Here</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info box -->
+        <div style="border:1px solid var(--border);padding:20px 24px;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);background:rgba(201,168,76,0.03);">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;color:var(--gold);text-transform:uppercase;margin-bottom:12px;">How it works</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:flex-start;gap:12px;">
+              <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--red);font-weight:700;flex-shrink:0;width:20px;">01</div>
+              <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.5;">Upload your profile picture — any clear face photo works best.</div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:12px;">
+              <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--red);font-weight:700;flex-shrink:0;width:20px;">02</div>
+              <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.5;">Pick your suit style — each unlocks a unique livery and colorway.</div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:12px;">
+              <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--red);font-weight:700;flex-shrink:0;width:20px;">03</div>
+              <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.5;">Hit generate — AI merges your face onto the official TrackX racer template.</div>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:12px;">
+              <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--red);font-weight:700;flex-shrink:0;width:20px;">04</div>
+              <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.5;">Download your 1024×1024 NFT-ready racer. Use it as your PFP.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- /build-grid -->
+
+  </div><!-- /build-wrap -->
+</div><!-- /build-hero -->
+
+
+<!-- ============================================
+     FOOTER (minimal)
+     ============================================ -->
+<footer style="background:var(--carbon);border-top:1px solid var(--border);padding:32px 24px;text-align:center;">
+  <a href="index.html" class="nav-logo" style="display:inline-block;margin-bottom:12px;text-decoration:none;font-family:'Orbitron',monospace;font-weight:900;letter-spacing:0.1em;font-size:1.1rem;color:var(--white);">TRACK<span style="color:var(--red)">X</span></a>
+  <p style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;color:var(--text-dim);text-transform:uppercase;">
+    © 2025 TrackX NFT — All rights reserved
+  </p>
+</footer>
+
+
+<script src="main.js"></script>
+<script>
+  // ---- DOM REFS ----
+  const pfpInput          = document.getElementById('pfp-input');
+  const uploadZone        = document.getElementById('upload-zone');
+  const uploadThumb       = document.getElementById('upload-thumb');
+  const uploadIcon        = document.getElementById('upload-icon');
+  const uploadText        = document.getElementById('upload-text');
+  const uploadSub         = document.getElementById('upload-sub');
+  const inputImg          = document.getElementById('input-img');
+  const inputPlaceholder  = document.getElementById('input-placeholder');
+  const generateBtn       = document.getElementById('generate-btn');
+  const downloadBtn       = document.getElementById('download-btn');
+  const resultImg         = document.getElementById('result-img');
+  const resultPlaceholder = document.getElementById('result-placeholder');
+  const resultLoading     = document.getElementById('result-loading');
+  const statusEl          = document.getElementById('build-status');
+
+  let imageDataUrl = '';
+  let resultUrl    = '';
+
+  // ---- DRAG & DROP ----
+  uploadZone.addEventListener('dragover', (e) => { e.preventDefault(); uploadZone.classList.add('dragover'); });
+  uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
+  uploadZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadZone.classList.remove('dragover');
+    const file = e.dataTransfer?.files?.[0];
+    if (file && file.type.startsWith('image/')) handleFile(file);
+  });
+  pfpInput.addEventListener('change', () => {
+    if (pfpInput.files[0]) handleFile(pfpInput.files[0]);
+  });
+
+  function handleFile(file) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      imageDataUrl = e.target.result;
+      uploadThumb.src = imageDataUrl;
+      uploadThumb.style.display = 'block';
+      uploadIcon.style.display = 'none';
+      uploadText.textContent = file.name.length > 22 ? file.name.substring(0, 22) + '…' : file.name;
+      uploadSub.textContent = (file.size / 1024 / 1024).toFixed(1) + ' MB · Click to change';
+      inputImg.src = imageDataUrl;
+      inputImg.classList.add('loaded');
+      inputPlaceholder.style.display = 'none';
+      generateBtn.disabled = false;
+      setStatus('PFP loaded — select a suit style and generate.');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // ---- SUIT STYLE SELECTION ----
+  document.querySelectorAll('.suit-option').forEach(option => {
+    option.addEventListener('click', () => {
+      document.querySelectorAll('.suit-option').forEach(o => o.classList.remove('selected'));
+      option.classList.add('selected');
+    });
+  });
+
+  // ---- STATUS ----
+  function setStatus(text, type = 'info') {
+    statusEl.textContent = text;
+    statusEl.className = 'build-status show';
+    if (type === 'error')   statusEl.classList.add('error');
+    if (type === 'success') statusEl.classList.add('success');
+  }
+
+  // ---- GENERATE ----
+  generateBtn.addEventListener('click', async () => {
+    if (!imageDataUrl) { setStatus('Upload a PFP first.', 'error'); return; }
+
+    const style = document.querySelector('input[name="suit"]:checked')?.value || 'neon';
+
+    generateBtn.disabled = true;
+    downloadBtn.disabled = true;
+    resultPlaceholder.style.display = 'none';
+    resultImg.classList.remove('loaded');
+    resultImg.removeAttribute('src');
+    resultLoading.classList.add('show');
+    setStatus('Generating your racer… this takes 20–60 seconds.');
+
+    try {
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageDataUrl, style })
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Generation failed.');
+
+      resultUrl = data.image;
+      resultImg.src = resultUrl;
+      resultImg.classList.add('loaded');
+      resultLoading.classList.remove('show');
+      downloadBtn.disabled = false;
+      setStatus('Your racer is ready — download and use as your PFP!', 'success');
+
+    } catch (err) {
+      resultLoading.classList.remove('show');
+      resultPlaceholder.style.display = '';
+      setStatus(err.message || 'Something went wrong. Try again.', 'error');
+    } finally {
+      generateBtn.disabled = false;
+    }
+  });
+
+  // ---- DOWNLOAD ----
+  downloadBtn.addEventListener('click', () => {
+    if (!resultUrl) return;
+    const a = document.createElement('a');
+    a.href = resultUrl;
+    a.download = 'trackx-racer.png';
+    a.click();
+  });
+</script>
+</body></html>
